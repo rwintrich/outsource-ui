@@ -1,0 +1,32 @@
+$color-ribble: rgba(0, 0, 0, 0.87);
+$color-font-accent: rgba(0, 0, 0, 0.54);
+$color-error: #e72f31;
+
+::ng-deep .mat-form-field.mat-form-field-invalid {
+  .mat-form-field-label,
+  .mat-form-field-label.mat-accent,
+  .mat-form-field-label .mat-form-field-required-marker {
+    color: $color-font-accent;
+  }
+  .mat-form-field-ripple,
+  .mat-form-field-ripple.mat-accent {
+    background-color: $color-ribble;
+  }
+}
+
+::ng-deep .mat-form-field.invalid {
+  .mat-form-field-label,
+  .mat-form-field-label.mat-accent,
+  .mat-form-field-label .mat-form-field-required-marker {
+    color: $color-error;
+  }
+  .mat-form-field-ripple,
+  .mat-form-field-ripple.mat-accent {
+    background-color: $color-error;
+  }
+}
+
+.mat-form-field-message {
+  position: absolute;
+  padding-top: 14px;
+}

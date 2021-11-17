@@ -1,0 +1,338 @@
+<p-table
+  #dt
+  [lazy]="true"
+  [value]="dataSource"
+  [(columns)]="displayedColumns"
+  [resizableColumns]="true"
+  [rows]="defaultPage"
+  [scrollable]="scrollable"
+  rowHover="true"
+  [customSort]="haveSortField"
+  [sortOrder]="sortDirection"
+  (onLazyLoad)="onLazyLoad($event)"
+  [lazyLoadOnInit]="lazyLoadInit"
+  [scrollHeight]="scrollHeight"
+  [sortField]="sortFieldInput"
+>
+  <ng-template pTemplate=" colgroup" let-columns>
+    <colgroup>
+      <col [class]="col.class" *ngFor="let col of columns" />
+      <col *ngIf="actions" class="--width-sm --cell-text-start" />
+    </colgroup>
+  </ng-template>
+
+  <!-- header -->
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th
+        scope="col"
+        *ngFor="let col of columns"
+        [class]="col.headerClass || col.class"
+        [pSortableColumn]="
+          haveSortField && col.type !== typeCellEnum.CHECKBOX
+            ? col.field
+            : false
+        "
+      >
+        <mat-checkbox
+          *ngIf="!col?.header && columnHasCheckbox(col)"
+          [(ngModel)]="checkBoxAll"
+          [disabled]="col.disabled"
+          (change)="checkAll($event, col.field)"
+        >
+        </mat-checkbox>
+        <span *ngIf="col.header"> {{ col.header | translate }}</span>
+        <p-sortIcon
+          *ngIf="
+            haveSortField &&
+            filtersIcon &&
+            col.field &&
+            (col.type === typeCellEnum.INPUT_TEXT || !col.type)
+          "
+          [field]="col.field"
+        ></p-sortIcon>
+      </th>
+      <th scope="col" *ngIf="actions"></th>
+    </tr>
+  </ng-template>
+
+  <!-- body -->
+  <ng-template
+    pTemplate="body"
+    let-rowData
+    let-columns="columns"
+    let-index="rowIndex"
+  >
+    <tr (click)="onClickRow(rowData, index, $event)">
+      <td
+        *ngFor="let col of columns"
+        [class]="getClass(col.dynamicClass, col.class, rowData)"
+      >
+        <!-- select  -->
+        <mat-select
+          *ngIf="getType(col, rowData) === typeCellEnum.SELECT"
+          class="--full"
+          [value]="rowData"
+          (selectionChange)="
+            setSelect(rowData, $event.value, col, index);
+            dataSource = dataSource
+          "
+          [disabled]="
+            col.selectConfig?.disabled && col.selectConfig?.disabled(rowData)
+          "
+          [compareWith]="col.selectConfig?.compareWith || compareWith"
+        >
+          <mat-option
+            *ngFor="let item of col.selectConfig?.itens || listSelect"
+            [value]="col.selectConfig?.itens ? item.id : item.value"
+          >
+            {{
+              (col.selectConfig?.itens ? item.value : item.label) | translate
+            }}
+          </mat-option>
+        </mat-select>
+
+        <!--autocomplete-->
+
+        <consorcio-autocomplete
+          *ngIf="getType(col, rowData) === typeCellEnum.AUTOCOMPLETE"
+          [(ngModel)]="rowData[col.field]"
+          [typeahead]="col.autocompleteOptions?.typeahead"
+          [search]="col.autocompleteOptions?.search"
+          [required]="col.autocompleteOptions?.required || false"
+          [clearable]="
+            col.autocompleteOptions?.clearable != null
+              ? col.autocompleteOptions?.clearable
+              : true
+          "
+          [showValueOnly]="col.autocompleteOptions?.showValueOnly || false"
+          [bindWholeObject]="col.autocompleteOptions?.bindWholeObject"
+          [bindLabel]="col.autocompleteOptions?.bindLabel || 'value'"
+          [bindValue]="col.autocompleteOptions?.bindValue || 'id'"
+          [allowDefaultValue]="
+            col.autocompleteOptions?.allowDefaultValue || false
+          "
+          [disabled]="isDisabled(col, rowData)"
+        ></consorcio-autocomplete>
+
+        <!-- input number  -->
+        <consorcio-masked-number-input
+          *ngIf="getType(col, rowData) === typeCellEnum.INPUT_NUMBER"
+          class="--full"
+          [(ngModel)]="rowData[col.field]"
+          (blur)="onInputBlur($event, col, rowData, index)"
+          [required]="col.inputConfig?.required"
+          [allowNegative]="false"
+          [decimals]="getDecimals(col, rowData)"
+          [integers]="getIntegers(col, rowData)"
+        >
+        </consorcio-masked-number-input>
+
+        <!-- input text  -->
+        <input
+          *ngIf="getType(col, rowData) === typeCellEnum.INPUT_TEXT"
+          class="--full"
+          matInput
+          [(ngModel)]="rowData[col.field]"
+          (blur)="onInputBlur($event, col, rowData, index)"
+          [maxlength]="getMaxLength(col, rowData)"
+          [required]="col.inputConfig?.required"
+          [disabled]="col.inputConfig?.disabled(rowData)"
+        />
+
+        <!-- input date  -->
+        <sq-datepicker
+          *ngIf="getType(col, rowData) === typeCellEnum.INPUT_DATE"
+          class="--full"
+          [(ngModel)]="rowData[col.field]"
+          [min]="col.inputDateOptions?.min"
+          [max]="col.inputDateOptions?.max"
+          (blur)="onInputBlur($event, col, rowData, index)"
+          [required]="col.inputDateOptions?.required"
+        >
+        </sq-datepicker>
+
+        <!-- texto  -->
+        <span
+          *ngIf="
+            col.type == null || getType(col, rowData) === typeCellEnum.TEXT
+          "
+          (click)="onClickTd(col, rowData, index, $event)"
+          [class.--link]="
+            (col.tdAction || col.onClick) &&
+            _tableFunctions.getValue(col, rowData) != ''
+          "
+          [class.--disabled]="isDisabled(col, rowData)"
+        >
+          {{
+            _tableFunctions.getValue(col, rowData) != ""
+              ? _tableFunctions.getValue(col, rowData)
+              : "-"
+          }}
+        </span>
+
+        <!-- checkbox -->
+        <mat-checkbox
+          [(ngModel)]="rowData[col.field != null ? col.field : 'checked']"
+          *ngIf="
+            getType(col, rowData) === typeCellEnum.CHECKBOX && !rowData.disabled
+          "
+          (click)="$event.stopPropagation()"
+          (change)="clickCheckbox($event, rowData, col.field, index)"
+          [disabled]="isDisabled(col, rowData)"
+        >
+        </mat-checkbox>
+        <i
+          aria-hidden="true"
+          class="icon-ok"
+          *ngIf="
+            getType(col, rowData) === typeCellEnum.CHECKBOX &&
+            rowData.disabled &&
+            rowData.checked
+          "
+        ></i>
+
+        <!-- mat menu -->
+        <div
+          class="--full"
+          *ngIf="getType(col, rowData) === typeCellEnum.MENU && col.menu"
+        >
+          <mat-menu #appMenu="matMenu" [overlapTrigger]="false">
+            <button
+              mat-menu-item
+              *ngFor="let item of col?.menu?.itens"
+              [class.--hidden]="item.disabled && item.disabled(rowData)"
+              (click)="item.click(rowData, index, $event)"
+            >
+              {{ item.text | translate }}
+            </button>
+          </mat-menu>
+          <button
+            mat-icon-button
+            class="--mb-xs"
+            [matMenuTriggerFor]="appMenu"
+            (click)="$event.stopPropagation()"
+          >
+            <i aria-hidden="true" class="icon-options"></i>
+          </button>
+        </div>
+
+        <!-- button -->
+        <div *ngIf="getType(col, rowData) === typeCellEnum.BUTTON">
+          <button
+            *ngIf="col?.buttonConfig?.icon"
+            mat-icon-button
+            type="button"
+            [disabled]="
+              col.buttonConfig?.disabled && col.buttonConfig.disabled(rowData)
+            "
+            (click)="onClickButton(col, rowData, index, $event)"
+          >
+            <i aria-hidden="true"></i>
+          </button>
+          <button
+            *ngIf="col?.buttonConfig?.type === 'raised'"
+            mat-raised-button
+            type="button"
+            color="accent"
+            [disabled]="
+              col.buttonConfig?.disabled && col.buttonConfig.disabled(rowData)
+            "
+            class="--my-xs"
+            (click)="onClickButton(col, rowData, index, $event)"
+          >
+            {{ col.buttonConfig.label | translate }}
+          </button>
+          <button
+            *ngIf="col?.buttonConfig?.type === 'stroked'"
+            mat-stroked-button
+            type="button"
+            color="accent"
+            [disabled]="
+              col.buttonConfig?.disabled && col.buttonConfig.disabled(rowData)
+            "
+            class="--my-xs"
+            (click)="onClickButton(col, rowData, index, $event)"
+          >
+            {{ col.buttonConfig.label | translate }}
+          </button>
+        </div>
+      </td>
+
+      <!-- deprecated buttons - usar displayed columns -->
+      <td class="--tb-text-end" *ngIf="actions">
+        <button
+          *ngIf="
+            archiveTable && viewButton && rowData?.mimeType === 'image/jpeg'
+          "
+          mat-icon-button
+          class="--padding-none"
+          type="button"
+          (click)="onClickViewButton(rowData, index, $event)"
+        >
+          <i aria-hidden="true" class="icon-mat-remove_red_eye --icon-xs"></i>
+        </button>
+        <button
+          *ngIf="archiveTable && downloadButton"
+          mat-icon-button
+          class="--padding-none"
+          type="button"
+          (click)="onClickDownloadButton(rowData, index, $event)"
+        >
+          <i aria-hidden="true" class="icon-mat-cloud_download --icon-xs"></i>
+        </button>
+        <button
+          *ngIf="buttonsActions === 'both' || buttonsActions === 'edit'"
+          mat-icon-button
+          class="--padding-none"
+          id="edit"
+          type="button"
+          (click)="onClickEdit(rowData, index, $event)"
+        >
+          <i aria-hidden="true" class="icon-edit --icon-xs"></i>
+        </button>
+        <button
+          *ngIf="buttonsActions === 'both' || buttonsActions === 'delete'"
+          mat-icon-button
+          class="--padding-none"
+          id="delete"
+          type="button"
+          (click)="onClickDelete(rowData, index, $event)"
+        >
+          <i aria-hidden="true" class="icon-trash --icon-xs"></i>
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <!-- template para lista vazia -->
+  <ng-template pTemplate="emptymessage" let-columns>
+    <tr>
+      <td [attr.colspan]="numberOfColumns" class="--cell-text-center">
+        {{ "validacoes.nenhumaInformacao" | translate }}
+      </td>
+    </tr>
+  </ng-template>
+
+  <!-- footer -->
+  <ng-template pTemplate="footer" let-columns *ngIf="isTotalizer">
+    <tr class="--text-bold">
+      <td
+        *ngFor="let total of totalizer"
+        [class]="total?.class"
+        [attr.colspan]="total?.colspan"
+      >
+        {{ total?.value | translate }}
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<!-- paginator -->
+<!-- <p-paginator
+  *ngIf="paginator && length > defaultPage"
+  [rows]="defaultPage"
+  [totalRecords]="length"
+  (onPageChange)="trackAndChangePage($event.page)"
+>
+</p-paginator> -->

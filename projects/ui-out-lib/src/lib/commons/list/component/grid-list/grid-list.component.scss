@@ -1,0 +1,36 @@
+.consorcio-grid{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}    
+
+.consorcio-grid-header {
+    background-color: #484b50;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 10pt;
+    padding: 4px;
+    cursor:pointer;
+}
+
+.consorcio-grid-list {
+    width:100%;
+    border: 1px solid #d9d9d9;
+    border-bottom: none;
+}
+
+.consorcio-grid-tile {
+    cursor:pointer;
+    background-color: white;
+    box-shadow: 1px 1px 1px #d9d9d9;
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 10pt;
+    &:hover {
+        background-color: #ebebeb;
+    }
+}
+
+.consorcio-grid-list-paginator {
+    margin-top: 1px;
+    border-top: 1px solid #d9d9d9;
+}

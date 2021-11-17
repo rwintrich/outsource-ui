@@ -1,0 +1,14 @@
+{
+  "name": "ui-out-lib",
+  "version": "0.0.3",
+  "peerDependencies": {
+    "@angular/common": "^12.2.0",
+    "@angular/core": "^12.2.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/mime": "^2.0.3"
+  }
+}

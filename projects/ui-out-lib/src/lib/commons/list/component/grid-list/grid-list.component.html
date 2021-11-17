@@ -1,0 +1,14 @@
+<div class="consorcio-grid">
+    <div class="consorcio-grid-header" (click)="onSortDirection()">
+        {{title}}
+        <i [ngClass]="{'ui-sortable-column-icon pi pi-fw': true, 'pi-sort-down': direction === -1, 'pi-sort-up': direction === 1}"></i>
+    </div>
+    <mat-grid-list class="consorcio-grid-list" [cols]="cols" rowHeight="30px">
+        <mat-grid-tile class="consorcio-grid-tile" *ngFor="let item of dataSource" [colspan]="1" [rowspan]="1" (click)="getTile(item)">
+            {{getTileLabel(item)}}
+        </mat-grid-tile>
+    </mat-grid-list>
+    <p-paginator class="consorcio-grid-list-paginator" *ngIf="dataSource && paginator" [rows]="rows" [totalRecords]="totalRecords"
+        (onPageChange)="onPageChange($event)">
+    </p-paginator>
+</div>

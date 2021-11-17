@@ -1,0 +1,807 @@
+$athens: #e9e9ef;
+$sinqia: #fa4616;
+$border: $athens;
+$disabled:$athens;
+$white: #fff;
+$contrast: $white;
+$hover:$athens;
+$text: #000011;
+$black: #000011;
+
+@mixin consorcio-datetime-hour-am-pointer-design($i) {
+  .consorcio-datetime-clock-hour-am:nth-child(#{$i}):after {
+    $calcdeg: $i * 30deg - 30deg;
+    transform: rotate($calcdeg);
+  }
+
+  @if ($i > 0) {
+    @include consorcio-datetime-hour-am-pointer-design($i - 1);
+  }
+}
+
+@mixin consorcio-datetime-hour-pm-pointer-design($i) {
+  .consorcio-datetime-clock-hour-pm:nth-child(#{$i}):after {
+    $calcdeg: $i * 30deg - 30deg;
+    transform: rotate($calcdeg);
+  }
+
+  @if ($i > 0) {
+    @include consorcio-datetime-hour-pm-pointer-design($i - 1);
+  }
+}
+
+@mixin consorcio-datetime-minute-second-pointer-design($i) {
+  .consorcio-datetime-clock-minute:nth-child(#{$i}):after,
+  .consorcio-datetime-clock-second:nth-child(#{$i}):after {
+    $calcdeg: $i * 6deg - 6deg;
+    transform: rotate($calcdeg);
+  }
+
+  @if ($i > 0) {
+    @include consorcio-datetime-minute-second-pointer-design($i - 1);
+  }
+}
+
+.consorcio-datetime {
+  display: flex;
+  overflow: hidden;
+  background-color: $white;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.consorcio-datetime-calendar,
+.consorcio-datetime-clock {
+  width: 300px;
+  height: 370px;
+}
+
+.consorcio-datetime-confirm {
+  display: flex;
+  align-items: flex-end;
+}
+
+.consorcio-datetime-button {
+  position: relative;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+
+  &.consorcio-icon-disabled {
+    color: $text;
+  }
+}
+
+.consorcio-datetime-button-confirm {
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+.consorcio-datetime-calendar-overlay {
+  position: absolute;
+}
+
+.consorcio-datetime-calendar-prev,
+.consorcio-datetime-calendar-next {
+  cursor: pointer;
+}
+
+.consorcio-datetime-calendar-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+  cursor: pointer;
+  border-radius: 50%;
+
+  &:hover {
+    background-color: $hover;
+  }
+
+  &.--disabled {
+    pointer-events: none;
+    color: $disabled;
+  }
+
+  &.--today {
+    border: 1px solid $border;
+  }
+
+  &.--selected {
+    background-color: $sinqia;
+    color: $contrast;
+  }
+}
+
+.consorcio-datetime-clock {
+  width: 300px;
+  height: 370px;
+  overflow: hidden;
+  background-color: $white;
+  position: relative;
+}
+
+.consorcio-datetime-clock-button {
+  display: block;
+  position: relative;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+
+  &.consorcio-icon-disabled {
+    color: $text;
+  }
+}
+
+.consorcio-datetime-clock-header {
+  background-color: $white;
+  color: $black;
+  height: 80px;
+  line-height: 80px;
+  font-size: 50px;
+  text-align: center;
+
+  span {
+    cursor: pointer;
+  }
+
+  .consorcio-datetime-clock-active-time {
+    color: $sinqia;
+  }
+}
+
+.consorcio-datetime-clock-circle {
+  user-select: none;
+
+  .consorcio-datetime-clock-circle-mid {
+    position: absolute;
+    left: calc(50% - 0px);
+    top: calc(50% - 0px);
+    width: 2px;
+    height: 2px;
+    border-radius: 10px;
+    background-color: black;
+  }
+
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 250px;
+  height: 250px;
+  border-radius: 1000px;
+  position: relative;
+  top: 25px;
+  left: 25px;
+  box-sizing: border-box;
+
+  // Posicionamento das horas dentro do círculo
+  .consorcio-datetime-clock-hour-am {
+    position: absolute;
+    height: 40px;
+    line-height: 40px;
+    width: 40px;
+    border-radius: 40px;
+    text-align: center;
+
+    // Posicionamento das horas de 1-12
+    &.consorcio-datetime-clock-hour-am-1 {
+      left: 155.5px;
+      top: 17.5314px;
+    }
+
+    &.consorcio-datetime-clock-hour-am-2 {
+      left: 192.469px;
+      top: 54.5px;
+    }
+
+    &.consorcio-datetime-clock-hour-am-3 {
+      left: 206px;
+      top: 105px;
+    }
+
+    &.consorcio-datetime-clock-hour-am-4 {
+      left: 192.469px;
+      top: 155.5px;
+    }
+
+    &.consorcio-datetime-clock-hour-am-5 {
+      left: 155.5px;
+      top: 192.469px;
+    }
+
+    &.consorcio-datetime-clock-hour-am-6 {
+      left: 105px;
+      top: 206px;
+    }
+
+    &.consorcio-datetime-clock-hour-am-7 {
+      left: 54.5px;
+      top: 192.469px;
+    }
+
+    &.consorcio-datetime-clock-hour-am-8 {
+      left: 17.5314px;
+      top: 155.5px;
+    }
+
+    &.consorcio-datetime-clock-hour-am-9 {
+      left: 4px;
+      top: 105px;
+    }
+
+    &.consorcio-datetime-clock-hour-am-10 {
+      left: 17.5314px;
+      top: 54.5px;
+    }
+
+    &.consorcio-datetime-clock-hour-am-11 {
+      left: 54.5px;
+      top: 17.5314px;
+    }
+
+    &.consorcio-datetime-clock-hour-am-12 {
+      left: 105px;
+      top: 4px;
+    }
+
+    &:hover {
+      color: #ffffff;
+      z-index: 2;
+      &::after {
+        content: "";
+      }
+    }
+
+    &.selected {
+      background-color: $sinqia;
+
+      &::after {
+        content: "";
+      }
+    }
+
+    &::after {
+      z-index: -1;
+      background-color: $sinqia;
+      height: 1px;
+      width: 100%;
+      position: absolute;
+      transform: rotate(-90deg);
+      transform-origin: 100% 0%;
+      top: 50%;
+      width: 101px;
+      right: 50%;
+    }
+  }
+
+  @include consorcio-datetime-hour-am-pointer-design(12);
+
+  // Posicionamento das horas dentro do círculo
+  .consorcio-datetime-clock-hour-pm {
+    z-index: 2;
+    position: absolute;
+    height: 30px;
+    line-height: 30px;
+    width: 30px;
+    border-radius: 40px;
+    text-align: center;
+    font-size: 14px;
+
+    // Posicionamento das horas de 13-24
+    &.consorcio-datetime-clock-hour-pm-1 {
+      left: 142px;
+      top: 54.5744px;
+    }
+
+    &.consorcio-datetime-clock-hour-pm-2 {
+      left: 165.426px;
+      top: 78px;
+    }
+
+    &.consorcio-datetime-clock-hour-pm-3 {
+      left: 174px;
+      top: 110px;
+    }
+
+    &.consorcio-datetime-clock-hour-pm-4 {
+      left: 165.426px;
+      top: 142px;
+    }
+
+    &.consorcio-datetime-clock-hour-pm-5 {
+      left: 142px;
+      top: 165.426px;
+    }
+
+    &.consorcio-datetime-clock-hour-pm-6 {
+      left: 110px;
+      top: 174px;
+    }
+
+    &.consorcio-datetime-clock-hour-pm-7 {
+      left: 78px;
+      top: 165.426px;
+    }
+
+    &.consorcio-datetime-clock-hour-pm-8 {
+      left: 54.5744px;
+      top: 142px;
+    }
+
+    &.consorcio-datetime-clock-hour-pm-9 {
+      left: 46px;
+      top: 110px;
+    }
+
+    &.consorcio-datetime-clock-hour-pm-10 {
+      left: 54.5744px;
+      top: 78px;
+    }
+
+    &.consorcio-datetime-clock-hour-pm-11 {
+      left: 78px;
+      top: 54.5744px;
+    }
+
+    &.consorcio-datetime-clock-hour-pm-12 {
+      left: 110px;
+      top: 46px;
+    }
+
+    &:hover {
+      color: #ffffff;
+
+      &::after {
+        content: "";
+        background-color: $sinqia;
+        height: 1px;
+        width: 100%;
+        position: absolute;
+        transform: rotate(-90deg);
+        transform-origin: 100% 0%;
+        top: 50%;
+        width: 64px;
+        right: 50%;
+        z-index: -1;
+      }
+    }
+  }
+
+  @include consorcio-datetime-hour-pm-pointer-design(24);
+
+  .consorcio-datetime-clock-hour-am,
+  .consorcio-datetime-clock-hour-pm {
+    &:hover {
+      background-color: $sinqia;
+    }
+  }
+
+  // Posicionamento dos minutos e dos segundos
+  .consorcio-datetime-clock-minute,
+  .consorcio-datetime-clock-second {
+    position: absolute;
+    height: 20px;
+    line-height: 20px;
+    width: 20px;
+    border-radius: 40px;
+    text-align: center;
+    font-size: 12px;
+
+    // Posicionamento das horas de 0-59
+    &.consorcio-datetime-clock-minute-0,
+    &.consorcio-datetime-clock-second-0 {
+      left: 115px;
+      top: 14px;
+    }
+
+    &.consorcio-datetime-clock-minute-1,
+    &.consorcio-datetime-clock-second-1 {
+      left: 125.557px;
+      top: 14.5533px;
+    }
+
+    &.consorcio-datetime-clock-minute-2,
+    &.consorcio-datetime-clock-second-2 {
+      left: 135.999px;
+      top: 16.2071px;
+    }
+
+    &.consorcio-datetime-clock-minute-3,
+    &.consorcio-datetime-clock-second-3 {
+      left: 146.211px;
+      top: 18.9433px;
+    }
+
+    &.consorcio-datetime-clock-minute-4,
+    &.consorcio-datetime-clock-second-4 {
+      left: 156.08px;
+      top: 22.7319px;
+    }
+
+    &.consorcio-datetime-clock-minute-5,
+    &.consorcio-datetime-clock-second-5 {
+      left: 165.5px;
+      top: 27.5314px;
+    }
+
+    &.consorcio-datetime-clock-minute-6,
+    &.consorcio-datetime-clock-second-6 {
+      left: 174.366px;
+      top: 33.2893px;
+    }
+
+    &.consorcio-datetime-clock-minute-7,
+    &.consorcio-datetime-clock-second-7 {
+      left: 182.582px;
+      top: 39.9424px;
+    }
+
+    &.consorcio-datetime-clock-minute-8,
+    &.consorcio-datetime-clock-second-8 {
+      left: 190.058px;
+      top: 47.4178px;
+    }
+
+    &.consorcio-datetime-clock-minute-9,
+    &.consorcio-datetime-clock-second-9 {
+      left: 196.711px;
+      top: 55.6337px;
+    }
+
+    &.consorcio-datetime-clock-minute-10,
+    &.consorcio-datetime-clock-second-10 {
+      left: 202.469px;
+      top: 64.5px;
+    }
+
+    &.consorcio-datetime-clock-minute-11,
+    &.consorcio-datetime-clock-second-11 {
+      left: 207.268px;
+      top: 73.9196px;
+    }
+
+    &.consorcio-datetime-clock-minute-12,
+    &.consorcio-datetime-clock-second-12 {
+      left: 211.057px;
+      top: 83.7893px;
+    }
+
+    &.consorcio-datetime-clock-minute-13,
+    &.consorcio-datetime-clock-second-13 {
+      left: 213.793px;
+      top: 94.0009px;
+    }
+
+    &.consorcio-datetime-clock-minute-14,
+    &.consorcio-datetime-clock-second-14 {
+      left: 215.447px;
+      top: 104.443px;
+    }
+
+    &.consorcio-datetime-clock-minute-15,
+    &.consorcio-datetime-clock-second-15 {
+      left: 216px;
+      top: 115px;
+    }
+
+    &.consorcio-datetime-clock-minute-16,
+    &.consorcio-datetime-clock-second-16 {
+      left: 215.447px;
+      top: 125.557px;
+    }
+
+    &.consorcio-datetime-clock-minute-17,
+    &.consorcio-datetime-clock-second-17 {
+      left: 213.793px;
+      top: 135.999px;
+    }
+
+    &.consorcio-datetime-clock-minute-18,
+    &.consorcio-datetime-clock-second-18 {
+      left: 211.057px;
+      top: 146.211px;
+    }
+
+    &.consorcio-datetime-clock-minute-19,
+    &.consorcio-datetime-clock-second-19 {
+      left: 207.268px;
+      top: 156.08px;
+    }
+
+    &.consorcio-datetime-clock-minute-20,
+    &.consorcio-datetime-clock-second-20 {
+      left: 202.469px;
+      top: 165.5px;
+    }
+
+    &.consorcio-datetime-clock-minute-21,
+    &.consorcio-datetime-clock-second-21 {
+      left: 196.711px;
+      top: 174.366px;
+    }
+
+    &.consorcio-datetime-clock-minute-22,
+    &.consorcio-datetime-clock-second-22 {
+      left: 190.058px;
+      top: 182.582px;
+    }
+
+    &.consorcio-datetime-clock-minute-23,
+    &.consorcio-datetime-clock-second-23 {
+      left: 182.582px;
+      top: 190.058px;
+    }
+
+    &.consorcio-datetime-clock-minute-24,
+    &.consorcio-datetime-clock-second-24 {
+      left: 174.366px;
+      top: 196.711px;
+    }
+
+    &.consorcio-datetime-clock-minute-25,
+    &.consorcio-datetime-clock-second-25 {
+      left: 165.5px;
+      top: 202.469px;
+    }
+
+    &.consorcio-datetime-clock-minute-26,
+    &.consorcio-datetime-clock-second-26 {
+      left: 156.08px;
+      top: 207.268px;
+    }
+
+    &.consorcio-datetime-clock-minute-27,
+    &.consorcio-datetime-clock-second-27 {
+      left: 146.211px;
+      top: 211.057px;
+    }
+
+    &.consorcio-datetime-clock-minute-28,
+    &.consorcio-datetime-clock-second-28 {
+      left: 135.999px;
+      top: 213.793px;
+    }
+
+    &.consorcio-datetime-clock-minute-29,
+    &.consorcio-datetime-clock-second-29 {
+      left: 125.557px;
+      top: 215.447px;
+    }
+
+    &.consorcio-datetime-clock-minute-30,
+    &.consorcio-datetime-clock-second-30 {
+      left: 115px;
+      top: 216px;
+    }
+
+    &.consorcio-datetime-clock-minute-31,
+    &.consorcio-datetime-clock-second-31 {
+      left: 104.443px;
+      top: 215.447px;
+    }
+
+    &.consorcio-datetime-clock-minute-32,
+    &.consorcio-datetime-clock-second-32 {
+      left: 94.0009px;
+      top: 213.793px;
+    }
+
+    &.consorcio-datetime-clock-minute-33,
+    &.consorcio-datetime-clock-second-33 {
+      left: 83.7893px;
+      top: 211.057px;
+    }
+
+    &.consorcio-datetime-clock-minute-34,
+    &.consorcio-datetime-clock-second-34 {
+      left: 73.9196px;
+      top: 207.268px;
+    }
+
+    &.consorcio-datetime-clock-minute-35,
+    &.consorcio-datetime-clock-second-35 {
+      left: 64.5px;
+      top: 202.469px;
+    }
+
+    &.consorcio-datetime-clock-minute-36,
+    &.consorcio-datetime-clock-second-36 {
+      left: 55.6337px;
+      top: 196.711px;
+    }
+
+    &.consorcio-datetime-clock-minute-37,
+    &.consorcio-datetime-clock-second-37 {
+      left: 47.4178px;
+      top: 190.058px;
+    }
+
+    &.consorcio-datetime-clock-minute-38,
+    &.consorcio-datetime-clock-second-38 {
+      left: 39.9424px;
+      top: 182.582px;
+    }
+
+    &.consorcio-datetime-clock-minute-39,
+    &.consorcio-datetime-clock-second-39 {
+      left: 33.2893px;
+      top: 174.366px;
+    }
+
+    &.consorcio-datetime-clock-minute-40,
+    &.consorcio-datetime-clock-second-40 {
+      left: 27.5314px;
+      top: 165.5px;
+    }
+
+    &.consorcio-datetime-clock-minute-41,
+    &.consorcio-datetime-clock-second-41 {
+      left: 22.7319px;
+      top: 156.08px;
+    }
+
+    &.consorcio-datetime-clock-minute-42,
+    &.consorcio-datetime-clock-second-42 {
+      left: 18.9433px;
+      top: 146.211px;
+    }
+
+    &.consorcio-datetime-clock-minute-43,
+    &.consorcio-datetime-clock-second-43 {
+      left: 16.2071px;
+      top: 135.999px;
+    }
+
+    &.consorcio-datetime-clock-minute-44,
+    &.consorcio-datetime-clock-second-44 {
+      left: 14.5533px;
+      top: 125.557px;
+    }
+
+    &.consorcio-datetime-clock-minute-45,
+    &.consorcio-datetime-clock-second-45 {
+      left: 14px;
+      top: 115px;
+    }
+
+    &.consorcio-datetime-clock-minute-46,
+    &.consorcio-datetime-clock-second-46 {
+      left: 14.5533px;
+      top: 104.443px;
+    }
+
+    &.consorcio-datetime-clock-minute-47,
+    &.consorcio-datetime-clock-second-47 {
+      left: 16.2071px;
+      top: 94.0009px;
+    }
+
+    &.consorcio-datetime-clock-minute-48,
+    &.consorcio-datetime-clock-second-48 {
+      left: 18.9433px;
+      top: 83.7893px;
+    }
+
+    &.consorcio-datetime-clock-minute-49,
+    &.consorcio-datetime-clock-second-49 {
+      left: 22.7319px;
+      top: 73.9196px;
+    }
+
+    &.consorcio-datetime-clock-minute-50,
+    &.consorcio-datetime-clock-second-50 {
+      left: 27.5314px;
+      top: 64.5px;
+    }
+
+    &.consorcio-datetime-clock-minute-51,
+    &.consorcio-datetime-clock-second-51 {
+      left: 33.2893px;
+      top: 55.6337px;
+    }
+
+    &.consorcio-datetime-clock-minute-52,
+    &.consorcio-datetime-clock-second-52 {
+      left: 39.9424px;
+      top: 47.4178px;
+    }
+
+    &.consorcio-datetime-clock-minute-53,
+    &.consorcio-datetime-clock-second-53 {
+      left: 47.4178px;
+      top: 39.9424px;
+    }
+
+    &.consorcio-datetime-clock-minute-54,
+    &.consorcio-datetime-clock-second-54 {
+      left: 55.6337px;
+      top: 33.2893px;
+    }
+
+    &.consorcio-datetime-clock-minute-55,
+    &.consorcio-datetime-clock-second-55 {
+      left: 64.5px;
+      top: 27.5314px;
+    }
+
+    &.consorcio-datetime-clock-minute-56,
+    &.consorcio-datetime-clock-second-56 {
+      left: 73.9196px;
+      top: 22.7319px;
+    }
+
+    &.consorcio-datetime-clock-minute-57,
+    &.consorcio-datetime-clock-second-57 {
+      left: 83.7893px;
+      top: 18.9433px;
+    }
+
+    &.consorcio-datetime-clock-minute-58,
+    &.consorcio-datetime-clock-second-58 {
+      left: 94.0009px;
+      top: 16.2071px;
+    }
+
+    &.consorcio-datetime-clock-minute-59,
+    &.consorcio-datetime-clock-second-59 {
+      left: 104.443px;
+      top: 14.5533px;
+    }
+
+    &:hover {
+      background-color: $sinqia;
+
+      &::after {
+        content: "";
+        background-color: $sinqia;
+        height: 1px;
+        width: 100%;
+        position: absolute;
+        transform: rotate(-90deg);
+        transform-origin: 100% 0%;
+        top: 50%;
+        width: 101px;
+        right: 50%;
+      }
+    }
+  }
+
+  @include consorcio-datetime-minute-second-pointer-design(60);
+}
+
+// @mixin consorcio-datetime() {
+//   $boxSpacing: 8px;
+
+.consorcio-datetime-calendar-header {
+  display: flex;
+  align-items: center;
+  background-color: $white;
+}
+
+.consorcio-datetime-calendar-month {
+  padding: 8px;
+  flex: 1;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.consorcio-datetime-calendar-week {
+  display: grid;
+  padding: 8px;
+  grid-template-columns: repeat(7, 1fr);
+  column-gap: 5px;
+  border-bottom: 1px solid $border;
+
+  > * {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+  }
+}
+
+.consorcio-datetime-calendar-schedule {
+  display: grid;
+  padding: 8px;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+// }

@@ -1,0 +1,67 @@
+<button mat-icon-button type="button" [disabled]="_disabled" (click)="onOpenSchedule(button, datetimeTemplate)">
+  <i aria-hidden="true" class="icon-timer--c" #button></i>
+</button>
+
+<ng-template #datetimeTemplate>
+  <div class="consorcio-datetime" [@openClose]="isTimeOpen ? 'open' : 'close'"
+    (@openClose.done)="onAnimationDone($event)">
+    <!-- Parte do relógio -->
+    <div class="consorcio-datetime-clock">
+      <!-- Header do relógio -->
+      <div class="consorcio-datetime-clock-header">
+        <span class="consorcio-datetime-clock-header-hour"
+          [class.consorcio-datetime-clock-active-time]="timeTypeActive === TypeTime.HOUR"
+          (click)="setTimeType(TypeTime.HOUR)">{{ hourDisplay }}</span><span
+          *ngIf="timeFormat === TimeFormat.HHMMSS || timeFormat === TimeFormat.HHMM"
+          class="consorcio-datetime-clock-header-minute"
+          [class.consorcio-datetime-clock-active-time]="timeTypeActive === TypeTime.MINUTE"
+          (click)="setTimeType(TypeTime.MINUTE)">:{{ minuteDisplay }}</span><span
+          *ngIf="timeFormat === TimeFormat.HHMMSS" class="consorcio-datetime-clock-header-second"
+          [class.consorcio-datetime-clock-active-time]="timeTypeActive === TypeTime.SECOND"
+          (click)="setTimeType(TypeTime.SECOND)">:{{ secondDisplay }}</span>
+      </div>
+      <!-- Relógio exibindo horas em AM/PM -->
+      <div class="consorcio-datetime-clock-circle" *ngIf="timeTypeActive === TypeTime.HOUR">
+        <div *ngFor="let hour of clockHours"
+          [class]="'consorcio-datetime-clock-hour-am consorcio-datetime-clock-hour-am-' + hour"
+          (click)="updateHour(hour)">
+          {{ hour }}
+        </div>
+        <div *ngFor="let hour of clockHours"
+          [class]="'consorcio-datetime-clock-hour-pm consorcio-datetime-clock-hour-pm-' + hour"
+          (click)="updateHour(hour + 12)">
+          {{ hour + 12 }}
+        </div>
+
+        <div class="consorcio-datetime-clock-circle-mid"></div>
+      </div>
+      <!-- Relógio exibindo minutos -->
+      <div class="consorcio-datetime-clock-circle"
+        *ngIf="timeTypeActive === TypeTime.MINUTE  && (timeFormat === TimeFormat.HHMMSS || timeFormat === TimeFormat.HHMM)">
+        <div *ngFor="let minute of clockMinutesSeconds"
+          [class]="'consorcio-datetime-clock-minute consorcio-datetime-clock-minute-' + minute"
+          (click)="updateMinute(minute)">
+          {{ minute % 5 === 0 ? minute : '.' }}
+        </div>
+
+        <div class="consorcio-datetime-clock-circle-mid"></div>
+      </div>
+      <!-- Relógio exibindo segundos -->
+      <div class="consorcio-datetime-clock-circle"
+        *ngIf="timeTypeActive === TypeTime.SECOND && timeFormat === TimeFormat.HHMMSS">
+        <div *ngFor="let second of clockMinutesSeconds"
+          [class]="'consorcio-datetime-clock-minute consorcio-datetime-clock-second-' + second"
+          (click)="updateSecond(second)">
+          {{ second % 5 === 0 ? second : '.' }}
+        </div>
+        <div class="consorcio-datetime-clock-circle-mid"></div>
+      </div>
+    </div>
+    <div class="consorcio-datetime-confirm">
+      <button type="button" mat-icon-button class="consorcio-datetime-button consorcio-datetime-button-confirm"
+        (click)="confirm()">
+        <i aria-hidden="true" class="icon-ok"></i>
+      </button>
+    </div>
+  </div>
+</ng-template>

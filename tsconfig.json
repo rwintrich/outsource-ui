@@ -19,12 +19,30 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ui-front": [
+        "dist/ui-front/ui-front",
+        "dist/ui-front"
+      ],
+      "ui-out-lib": [
+        "dist/ui-out-lib/ui-out-lib",
+        "dist/ui-out-lib"
+      ],
+      "ui-outsourcing": [
+        "dist/ui-outsourcing/ui-outsourcing",
+        "dist/ui-outsourcing"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": false,
+    
+    "enableIvy": true,
+    "compilationMode": "partial"
+
   }
 }

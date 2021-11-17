@@ -1,0 +1,25 @@
+<mat-expansion-panel [expanded]='expandedPanel' (closed)="expandedPanel = false" (opened)="expandedPanel = true" #panel>
+  <mat-expansion-panel-header>
+    <div class="fx-row fx-center">
+      <span class="--text-bold --text-md fx-row fx-center --sq-mr-md">
+        <button type="button" mat-raised-button class="--sq-mr-xs --btn-search-comp --sq-px-no">
+          <i class="icon-mat-filter_list --icon-size-xxl"></i>
+        </button>
+        {{ titleText | translate }}
+      </span>
+      <ng-content class="fx-row --full" select="[id=expansion-header]"></ng-content>
+    </div>
+    <div class="fx-row fx-right fx-center --mr-md">
+      <button mat-icon-button *ngIf="fixSearch" class="--padding-none 	--b-xs"
+        [ngClass]="{'--select': this.fixedPanel, '--no-select': !this.fixedPanel}" type="button" style="padding:0"
+        (click)="pinPanel($event, panel)">
+        <i class="icon-edit --icon-xs"></i>
+      </button>
+    </div>
+  </mat-expansion-panel-header>
+  <div class="fx-col --sq-px-no --sq-py-no">
+    <ng-content class="fx-row --fx-item" select="[id=expansion-content]"></ng-content>
+
+    <ng-content class="fx-row --fx-item --text-right" select="[id=expansion-action]"></ng-content>
+  </div>
+</mat-expansion-panel>

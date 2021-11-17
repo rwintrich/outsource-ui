@@ -3,5 +3,57 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-  }
+    
+   
+    "ui-out-lib": {
+      "projectType": "library",
+      "root": "projects/ui-out-lib",
+      "sourceRoot": "projects/ui-out-lib/src",
+      "prefix": "lib",
+      "architect": {
+        
+        "build": {
+          
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+ 
+            "project": "projects/ui-out-lib/ng-package.json"
+            
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ui-out-lib/tsconfig.lib.prod.json"
+            },
+            "development": {
+
+              "tsConfig": "projects/ui-out-lib/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ui-out-lib/src/test.ts",
+            "tsConfig": "projects/ui-out-lib/tsconfig.spec.json",
+            "karmaConfig": "projects/ui-out-lib/karma.conf.js",
+          
+            "styles": [
+              "src/styles.scss",
+              "node_modules/primeflex/src/_variables.scss",
+              "node_modules/primeflex/src/_grid.scss",
+              "node_modules/primeflex/src/_formlayout.scss",
+              "node_modules/primeflex/src/_display.scss",
+              "node_modules/primeflex/src/_text.scss",
+              "node_modules/primeflex/src/flexbox/_flexbox.scss",
+              "node_modules/primeflex/src/_spacing.scss",
+              "node_modules/primeflex/src/_elevation.scss"
+          ]
+          }
+        }
+      }
+      
+    }
+  },
+  "defaultProject": "ui-front"
 }

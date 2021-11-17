@@ -1,0 +1,20 @@
+.consorcio-datetimepicker {
+  display: block;
+  position: relative;
+
+  .consorcio-datetime-button {
+    position: absolute;
+    top: 16px;
+    right: 0;
+    font-size: 16px;
+    margin-right: 8px;
+  }
+}
+
+.consorcio-datetimepicker.ng-invalid.ng-touched .consorcio-datetime-button {
+  color: #e72f31;
+}
+
+.consorcio-datetimepicker-content {
+  margin-top: -12px;
+}

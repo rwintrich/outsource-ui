@@ -1,0 +1,27 @@
+<div>
+  <div #selectContainer style="height: 40px;">
+    <ng-select style="position: absolute;" [style.width]="selectContainer.offsetWidth+'px'"
+    [id]="'autocomplete'+placeholder" [(ngModel)]="value" [bindValue]="bindValue" [items]="list | async"
+    [bindLabel]="bindLabel" [disabled]="disabled" placeholder="{{ placeholder | translate}}{{ required ? ' *' : '' }}"
+    [clearable]="clearable"  (clear)="onClear()" [loading]="loading" [class.invalid]="showError" [class.ng-touched]="touched && required"
+    [class.--loading]="loading" [typeahead]="typeahead" [typeToSearchText]="'hint.digiteUmaPesquisa' | translate"
+    [required]='required' (blur)="onFocusOut()" (change)="valueChange($event)" appendTo="body">
+    
+    <ng-template ng-option-tmp let-item="item" let-index="index">
+      <div> {{ (showValueOnly || item[bindValue] == null)
+        ? item[bindLabel] : (item[bindValue] + (item[bindLabel] ? (' - '
+        + item[bindLabel]) : '')) }} </div>
+      </ng-template>
+      
+      <ng-template ng-label-tmp let-item="item">
+        {{ (showValueOnly || item[bindValue] == null) ? item[bindLabel] : (item[bindValue] + (item[bindLabel] ? (' - ' +
+        item[bindLabel]) : '')) }}
+      </ng-template>
+    </ng-select>
+  </div>
+  <div class="--mb-xs">
+    <small class="mat-error" *ngIf="showRequiredError">
+      {{'validacoes.vazio' | translate}}
+    </small>
+  </div>
+</div>  

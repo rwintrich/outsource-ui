@@ -1,0 +1,16 @@
+<div class="fx-row">
+  <div class="fx-col --full">
+    <mat-form-field>
+      <input matInput type="text" class="consorcio-datetimepicker-input"
+        [textMask]="{ mask: mask, placeholderChar: '0', showMask: true }"
+        [placeholder]="placeholder + (required ? '*' : '')" [disabled]="_disabled" [value]="textValue"
+        (input)="onInputChange($event.target.value)" (focusout)="focusOut()" #inputRef>
+    </mat-form-field>
+    <div class="consorcio-datetimepicker-content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+  <consorcio-time class="consorcio-datetimepicker-calendar" [time]="time" [disabled]="_disabled" [append]="inputRef"
+    (change)="onDateChange($event)" [timeFormat]="_timeFormat" onlyIcon>
+  </consorcio-time>
+</div>
