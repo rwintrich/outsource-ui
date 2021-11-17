@@ -1,9 +1,9 @@
-# UiFront
+### UiFront
+# Notas
+- Versão do Angular CLI - 12.2.7 
+- Versão do Node - 12.22.6 
+- Bootstrap - 4
 
-## Notas
-Versão do Angular CLI - 12.2.7
-Versão do Node - 12.22.6
-Bootstrap - 4
 
 Esse é um projeto de library UI, responsável por armanezar componentes da aplicação.
 
@@ -30,3 +30,4 @@ Não trabalhamos com testes, no máximo que fazemos é um teste da nossa sexuali
 Não indicamos, nem gostamos de mentos, porém gostamos de coca-cola.
 
 
+ 
