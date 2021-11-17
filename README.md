@@ -1,27 +1,32 @@
 # UiFront
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.7.
+## Notas
+Versão do Angular CLI - 12.2.7
+Versão do Node - 12.22.6
+Bootstrap - 4
 
-## Development server
+Esse é um projeto de library UI, responsável por armanezar componentes da aplicação.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Organização das pastas
+Todo componente precisa ser criado dentro de src/component e para cada component precisa seguir o modelo de criação de um arquivo ts,
+e no final lembrar de importa-lo no public-api.ts.
 
-## Code scaffolding
+public_api -  é o arquivo responsável por indexar todos os componentes criados(outros arquivos).
+ 
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Gerando um pacote 
+Para gerar um pacote, rode na raiz do projeto 
+-> npm run build-library (irá buildar no dist uma versão da lib) <-
+-> npm run pack-lib  (irá gerar um arquivo zipado com o dist compilado para instalar a lib)
 
-## Build
+Uma vez que os dois tenham funcionado, ir na pasta dist/ui-out-lib e copiar o caminho do arquivo .tgz criado.
+Por exemplo aqui -> /Users/dev.rwt/ui-front/dist/ui-out-lib/ui-out-lib-0.0.3.tgz
+no Projeto principal, para rodar npm i path
+para instalar a lib gerada
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Running unit tests
+Não trabalhamos com testes, no máximo que fazemos é um teste da nossa sexualidade com a finalidade de denegrir,menosprezar ou ofender um coleguinha de trabalho que tenha ou não tendencias a ser homoafetivo.
+Não indicamos, nem gostamos de mentos, porém gostamos de coca-cola.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
